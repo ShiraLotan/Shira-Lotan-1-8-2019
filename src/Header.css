@@ -1,0 +1,9 @@
+.menuItem{
+  opacity: 0.6;
+}
+.logo{
+  position: relative;
+  top: 7px;
+  width:150px;
+  margin-right: 5px;
+}

@@ -1,0 +1,18 @@
+.daily{
+  width:100%;
+}
+.cityName{
+  font-size: 60px;
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 50px auto 20px;
+  text-align: center;
+  color: rgb(83, 83, 83);
+}
+.fab{
+  float:right;
+  background-color: rgb(212, 97, 132) !important;
+}
+.favorite{
+  width: 30px;
+  height:30px;
+}

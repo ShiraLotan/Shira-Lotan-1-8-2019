@@ -1,0 +1,18 @@
+.Day{
+  display: inline-block;
+  opacity: 0.75;
+  margin:5px;
+}
+.celsius{
+  position: relative;
+  top:4px;
+  width:20px;
+  height:20px;
+}
+.title{
+  font-size: 17px;
+}
+.sun{
+  height:40px;
+  width:40px;
+}

@@ -1,0 +1,12 @@
+.Weather{
+  height: 100%;
+  padding:40px;
+  background-image: url('./img/seaAndSun.jpg');
+}
+.Search{
+  margin:20px auto;
+}
+.searchInp{
+position: relative;
+top:50px;
+}
