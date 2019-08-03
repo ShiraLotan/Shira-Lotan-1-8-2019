@@ -10,27 +10,45 @@ import { connect } from "react-redux";
 
 class Daily extends Component {
   state={
-    city:'Tel Aviv',
+    city:this.props.state.searchName,
     fiveDaysForcst:[],
     key:''
   }
 
   async componentDidMount()
   {
-    const city = await this.getCityCode()
-    const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    // const telAviv = '215854';
-    const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
-    const data = await respond.json()
-    this.setState({
-      fiveDaysForcst:data.DailyForecasts,
-      key: city.key
-    })
+    debugger
+    if(this.props.state.searchName===''){
+      const city = await this.getCityCode('tel aviv')
+      const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+
+      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
+      const data = await respond.json()
+      this.setState({
+        city: 'Tel Aviv',
+        fiveDaysForcst:data.DailyForecasts,
+        key: city.key
+      })
+    }else{
+      this.setState({
+        city: this.props.state.searchName
+      })
+      const city = await this.getCityCode(this.props.state.searchName)
+      const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+
+      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
+      const data = await respond.json()
+      this.setState({
+        fiveDaysForcst:data.DailyForecasts,
+        key: city.key
+      })
+    }
+    
   }
 
-  async getCityCode(){
+  async getCityCode(city_name){
     const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    let prepareCityName =this.state.city.split(" ")
+    let prepareCityName =city_name.split(" ")
     let finalCityForUrl = prepareCityName[0] + '%20' + prepareCityName[1]
     const city = finalCityForUrl;
 
@@ -88,6 +106,7 @@ const mapDispatchToProps = function(dispatch){
     }
 const mapStateToProps=(state)=>
     {
+      debugger
       return {state: state}
     }
 let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)

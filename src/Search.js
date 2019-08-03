@@ -71,7 +71,8 @@ function Search(props) {
 
   const handleSearch=async()=>
       {
-          props.searchCityName(searchName)
+        debugger
+        props.searchCityName(searchName.searchName)
       }
   const classes = useStyles();
 
@@ -101,6 +102,7 @@ function Search(props) {
 }
 
 const mapDispatchToProps = function(dispatch){
+  debugger
   let obj = {
       searchCityName: function(data){
         dispatch(searchCity(data))

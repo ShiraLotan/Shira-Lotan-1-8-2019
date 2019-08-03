@@ -2,7 +2,8 @@ const ADD_CITY = 'ADD_CITY';
 const SEARCH = 'SEARCH';
 
 const initialState = {
-  allcities: []
+  allcities: [],
+  searchName: ''
 };
 
 export default function(state = initialState, action) {
@@ -17,13 +18,14 @@ export default function(state = initialState, action) {
       };
     }
     case SEARCH:{
-        debugger
-        const search = action.search.searchName;
+        const search = action.search.forcast;
         return {
+            ...state,
           searchName: search,
-        
+
         };
       }
+
     // case TOGGLE_TODO: {
     //   const { id } = action.payload;
     //   return {
