@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Favorite.css';
 import { connect } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -13,6 +12,7 @@ class Favorite extends Component {
     return <div className='favorite'>
           
             <h1 className='headline'>My Favorite</h1>
+            {/* {this.props.weather.map(city=> console.log(city))} */}
                       <Card className='card'>
                 <CardContent>
                   <Typography  color="textSecondary" gutterBottom>

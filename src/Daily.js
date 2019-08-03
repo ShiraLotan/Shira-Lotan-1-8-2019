@@ -7,10 +7,12 @@ import favorite from './img/favorite.png';
 import { addToFavorite } from './Action';
 import { connect } from "react-redux";
 
+
 class Daily extends Component {
   state={
     city:'Tel Aviv',
-    fiveDaysForcst:[]
+    fiveDaysForcst:[],
+    key:''
   }
 
   async componentDidMount()
@@ -21,9 +23,9 @@ class Daily extends Component {
     const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
     const data = await respond.json()
     this.setState({
-      fiveDaysForcst:data.DailyForecasts
+      fiveDaysForcst:data.DailyForecasts,
+      key: city.key
     })
-
   }
 
   async getCityCode(){
@@ -31,6 +33,7 @@ class Daily extends Component {
     let prepareCityName =this.state.city.split(" ")
     let finalCityForUrl = prepareCityName[0] + '%20' + prepareCityName[1]
     const city = finalCityForUrl;
+
     const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`);
     const data =await respond.json();
     const cityObj = {
@@ -42,10 +45,22 @@ class Daily extends Component {
   }
   classes =()=>{useStyles()} 
 
+  async getCurrentWeather()
+{
+  const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+  const cityKey = this.state.key
+  const respond =await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
+  const data = await respond.json();
+    this.setState({
+      currentWeather: data
+    })
+
+     await this.props.favorite(this.state)
+}
   render() {
 
     return <div className='daily'> 
-                <Fab onClick={this.props.favorite(this.state)} color="primary" aria-label="add" className='fab'>
+                <Fab onClick={this.getCurrentWeather.bind(this)} color="primary" aria-label="add" className='fab'>
                     <img className='favorite' src={favorite} alt='#'/>
                 </Fab>
           <h1 className='cityName'>{this.state.city}</h1>
@@ -62,20 +77,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const mapDispatchToProps = function(dispatch){
 
+const mapDispatchToProps = function(dispatch){
     let obj = {
-      
         favorite: function(data){
           dispatch(addToFavorite(data))
         }
-
       } 
       return obj
-
     }
-
-
-let daily = connect(null,mapDispatchToProps)(Daily)
+const mapStateToProps=(state)=>
+    {
+      return {state: state}
+    }
+let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)
 
 export default daily

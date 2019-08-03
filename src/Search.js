@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
+import { searchCity } from './Action';
+import { connect } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -57,9 +59,21 @@ const useStyles = makeStyles(theme => ({
 
 
 
-function Search() {
-  
-    const classes = useStyles();
+function Search(props) {
+  const [searchName, setSearchName] = useState('');
+
+  const handelChangeName=(ev)=>
+      {
+        setSearchName({
+          searchName: ev.target.value
+        })
+      };
+
+  const handleSearch=async()=>
+      {
+          props.searchCityName(searchName)
+      }
+  const classes = useStyles();
 
     return  <div className='Search'>
                <div className='searchInp'>
@@ -72,10 +86,11 @@ function Search() {
                         input: classes.inputInput,
                       }}
                       inputProps={{ 'aria-label': 'search' }}
+                      onChange={handelChangeName}
                     />
                   
                 </div>
-                <Button variant="contained" color="default" className={classes.button}>
+                <Button onClick={handleSearch} variant="contained" color="default" className={classes.button}>
                       Search
                     </Button>
                 
@@ -85,4 +100,15 @@ function Search() {
   
 }
 
-export default Search;
+const mapDispatchToProps = function(dispatch){
+  let obj = {
+      searchCityName: function(data){
+        dispatch(searchCity(data))
+      }
+    } 
+    return obj
+  }
+
+let search = connect(null,mapDispatchToProps)(Search)
+
+export default search;

@@ -6,6 +6,13 @@ export const addToFavorite = forcast => ({
   }
 })
 
+export const searchCity = forcast => ({
+    type: 'SEARCH',
+    search: {
+      forcast
+    }
+  })
+
 
 export const deleteFromFavorite = todelete => ({
     type: 'DELETE_CITY',
