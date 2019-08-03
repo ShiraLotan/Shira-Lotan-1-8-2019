@@ -5,6 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import { addToFavorite } from './Action';
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -18,9 +19,7 @@ class Daily extends Component {
 
   async componentDidMount()
   {
-    const count = 0;
-    console.log(count +1)
-    console.log(this.props.data)
+  
     if(this.props.data===''){
       const city = await this.getCityCode('tel aviv')
       const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
@@ -67,6 +66,7 @@ class Daily extends Component {
 
   async getCurrentWeather()
 {
+  const { history } = this.props;
   const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
   const cityKey = this.state.key
   const respond =await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
@@ -76,6 +76,7 @@ class Daily extends Component {
     })
      await localStorage.setItem('data', JSON.stringify(this.state))
      await this.props.favorite(this.state)
+     await history.push("/favorite")
 }
 classes =()=> useStyles();
 
@@ -126,4 +127,4 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default daily
+export default withRouter(daily)

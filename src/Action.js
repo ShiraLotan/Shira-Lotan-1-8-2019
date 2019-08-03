@@ -6,6 +6,11 @@ export const addToFavorite = forcast => ({
   }
 })
 
+export const setLocalStorage = forcast => ({
+  type: 'ADD_STORAGE',
+  weather: forcast
+})
+
 export const searchCity = forcast => ({
     type: 'SEARCH',
     search: {

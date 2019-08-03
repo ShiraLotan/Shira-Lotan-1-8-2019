@@ -5,9 +5,6 @@ import Button from '@material-ui/core/Button';
 import { searchCity } from './Action';
 import { connect } from "react-redux";
 
-
-
-
 class Search extends Component {
   state={
     searchName:''

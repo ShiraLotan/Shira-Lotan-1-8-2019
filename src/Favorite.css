@@ -1,8 +1,9 @@
 .favorite{
-  height: 100%;
-  width: 100%;
+  height: 600px;
+  width: 94.3%;
   padding:40px;
   background-image: url('./img/seaAndSun.jpg');
+  background-repeat: no-repeat;
 }
 
 .headline{
@@ -13,7 +14,28 @@
   color: rgb(83, 83, 83);
 }
 .card{
+  justify-content: center;
   width: 230px;
   height: 287px;
   opacity: .85;
+}
+.emptyHeadline{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.noFav{
+  width: 400px;
+  margin: auto;
+  padding: 10px;
+  height: 100px;
+  opacity: .85;
+}
+.imgsEmptyFav{
+  width:50px;
+  height: 50px;
+  margin: 7px 30px;
+}
+.allImg{
+  text-align: center;
 }

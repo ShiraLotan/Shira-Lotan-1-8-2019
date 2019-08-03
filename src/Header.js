@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Weather from './Weather';
 import Favorite from './Favorite';
+import Daily from './Daily';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -35,8 +36,10 @@ function Header() {
           
 
         <Switch>
-          <Route path="/" exact component={Weather} />
-          <Route path="/favorite"  component={Favorite} />
+          <Route path="/" exact render={(props)=><Weather {...props}/>} />
+          <Route path="/favorite"  render={(props)=><Favorite {...props}/>} />
+          <Route  render={(props)=><Daily {...props}/>} />
+
         </Switch>
      
     </Router>
