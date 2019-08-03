@@ -1,0 +1,19 @@
+.favorite{
+  height: 100%;
+  width: 100%;
+  padding:40px;
+  background-image: url('./img/seaAndSun.jpg');
+}
+
+.headline{
+  font-size: 60px;
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 50px auto 20px;
+  text-align: center;
+  color: rgb(83, 83, 83);
+}
+.card{
+  width: 230px;
+  height: 287px;
+  opacity: .85;
+}

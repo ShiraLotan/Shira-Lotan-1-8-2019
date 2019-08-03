@@ -4,6 +4,8 @@ import './Daily.css';
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import favorite from './img/favorite.png';
+import { addToFavorite } from './Action';
+import { connect } from "react-redux";
 
 class Daily extends Component {
   state={
@@ -43,7 +45,7 @@ class Daily extends Component {
   render() {
 
     return <div className='daily'> 
-                <Fab color="primary" aria-label="add" className='fab'>
+                <Fab onClick={this.props.favorite(this.state)} color="primary" aria-label="add" className='fab'>
                     <img className='favorite' src={favorite} alt='#'/>
                 </Fab>
           <h1 className='cityName'>{this.state.city}</h1>
@@ -59,4 +61,21 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
 }));
-export default Daily;
+
+const mapDispatchToProps = function(dispatch){
+
+    let obj = {
+      
+        favorite: function(data){
+          dispatch(addToFavorite(data))
+        }
+
+      } 
+      return obj
+
+    }
+
+
+let daily = connect(null,mapDispatchToProps)(Daily)
+
+export default daily
