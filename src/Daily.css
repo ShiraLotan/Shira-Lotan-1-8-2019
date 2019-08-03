@@ -9,10 +9,8 @@
   color: rgb(83, 83, 83);
 }
 .fab{
-  float:right;
-  background-color: rgb(212, 97, 132) !important;
+  float: right;
 }
-.favorite{
-  width: 30px;
-  height:30px;
+.plus{
+font-size:30px;
 }

@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import Day from './Day';
 import './Daily.css';
-import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
-import favorite from './img/favorite.png';
 import { addToFavorite } from './Action';
 import { connect } from "react-redux";
+import { makeStyles } from '@material-ui/core/styles';
+
 
 
 class Daily extends Component {
+
   state={
-    city:this.props.state.searchName,
+    city:this.props.data,
     fiveDaysForcst:[],
     key:''
   }
 
   async componentDidMount()
   {
-    debugger
-    if(this.props.state.searchName===''){
+    const count = 0;
+    console.log(count +1)
+    console.log(this.props.data)
+    if(this.props.data===''){
       const city = await this.getCityCode('tel aviv')
       const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
 
@@ -31,9 +34,9 @@ class Daily extends Component {
       })
     }else{
       this.setState({
-        city: this.props.state.searchName
+        city: this.props.data
       })
-      const city = await this.getCityCode(this.props.state.searchName)
+      const city = await this.getCityCode(this.props.data)
       const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
 
       const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
@@ -61,7 +64,6 @@ class Daily extends Component {
         return cityObj
     
   }
-  classes =()=>{useStyles()} 
 
   async getCurrentWeather()
 {
@@ -72,28 +74,29 @@ class Daily extends Component {
     this.setState({
       currentWeather: data
     })
-
+     await localStorage.setItem('data', JSON.stringify(this.state))
      await this.props.favorite(this.state)
 }
+classes =()=> useStyles();
+
+
   render() {
 
     return <div className='daily'> 
-                <Fab onClick={this.getCurrentWeather.bind(this)} color="primary" aria-label="add" className='fab'>
-                    <img className='favorite' src={favorite} alt='#'/>
-                </Fab>
+    <div className='fab'>
+      <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
+          <span className='plus'>+</span>
+      </Fab>
+    </div>           
           <h1 className='cityName'>{this.state.city}</h1>
-          
+          <h1>{this.props.data}</h1>
           {this.state.fiveDaysForcst.map(function(day, i){
             return <Day key={i} weather={day} index={i} />})}
           </div>
   }
 }
 
-const useStyles = makeStyles(theme => ({
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-}));
+
 
 
 const mapDispatchToProps = function(dispatch){
@@ -104,11 +107,23 @@ const mapDispatchToProps = function(dispatch){
       } 
       return obj
     }
+    
 const mapStateToProps=(state)=>
     {
-      debugger
-      return {state: state}
+      return {data: state.searchName}
     }
 let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)
+
+
+
+const useStyles = makeStyles(theme => ({
+  
+  fab: {
+    margin: theme.spacing(1),
+  },
+  extendedIcon: {
+    marginRight: theme.spacing(1),
+  },
+}));
 
 export default daily
