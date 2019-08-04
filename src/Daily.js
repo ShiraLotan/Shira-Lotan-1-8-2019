@@ -18,7 +18,6 @@ class Daily extends Component {
   }
 
   async updateForecast(city) {
-    console.log('Update City');
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
     const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
     const data = await respond.json()
@@ -62,9 +61,10 @@ class Daily extends Component {
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
     const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
     const data = await respond.json();
+    debugger
     return {
-      name: data.ParentCity.LocalizedName,
-      key: data.ParentCity.Key
+      name: data.LocalizedName,
+      key: data.Key
     };
   }
 
@@ -86,6 +86,7 @@ class Daily extends Component {
   }
 
   async getCurrentWeather() {
+    
     const { history } = this.props;
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
     const cityKey = this.state.key

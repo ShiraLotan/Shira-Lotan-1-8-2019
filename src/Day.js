@@ -10,8 +10,8 @@ import sunny from './img/sunny.png';
 import clear from './img/clear.png';
 import mostlyClear from './img/mostlyClear.png';
 import partlyCloudy from './img/partlyCloudy.jpeg';
-
-
+import partlySunny from './img/partlySunny.png';
+import cloudy from './img/cloudy.jpeg';
 
 
 
@@ -72,11 +72,11 @@ function Day(props) {
         {detectDay(props.index)}
         </Typography>
         
-        { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: null)}
+        { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Partly sunny' ? <img className='sun' src={partlySunny} alt='#'/>: null))}
         <Typography className={classes.pos} color="textSecondary">
          Day: {props.weather.Day.IconPhrase}
         </Typography>
-        { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: null))}
+        { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly cloudy' ? <img className='sun' src={cloudy} alt='#'/>: null)))}
 
         <Typography className={classes.pos} color="textSecondary">
           Night: {props.weather.Night.IconPhrase} 
