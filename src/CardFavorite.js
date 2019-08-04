@@ -11,6 +11,7 @@ import celsius from './img/celsius.png';
 import cold from './img/cold.png';
 import { connect } from "react-redux";
 import { deleteFromFavorite } from './Action'
+import { withRouter } from 'react-router-dom';
 
 class CardFav extends Component {
 
@@ -18,13 +19,17 @@ class CardFav extends Component {
     console.log(this.props.city.key) 
     this.props.deleteCity(this.props.city.key)
   }
+  mainPage=()=>
+  {
+   this.props.history.push("/")
+  }
 
   render() {
     const num = Number(this.props.city.currentWeather[0].Temperature.Metric.Value)
     
     return <div className='allcards'>
 
-              <Card className='card'>
+              <Card onClick={this.mainPage} className='card'>
                 <CardContent>
                   <Typography  color="textSecondary" gutterBottom>
                       {this.props.city.city}
@@ -58,4 +63,4 @@ const mapDispatchToProps = function(dispatch){
 
 let cardFav = connect(null ,mapDispatchToProps)(CardFav)
 
-export default cardFav;
+export default withRouter(cardFav);
