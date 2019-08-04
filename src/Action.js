@@ -21,7 +21,5 @@ export const searchCity = forcast => ({
 
 export const deleteFromFavorite = todelete => ({
     type: 'DELETE_CITY',
-    weather: {
-        todelete
-    }
+    key: todelete
   })

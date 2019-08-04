@@ -9,13 +9,19 @@ import sunny from './img/sunny.png';
 import mostlySunny from './img/mostlySunny.png';
 import celsius from './img/celsius.png';
 import cold from './img/cold.png';
-
+import { connect } from "react-redux";
+import { deleteFromFavorite } from './Action'
 
 class CardFav extends Component {
- 
+
+  removeFav=()=>{
+    console.log(this.props.city.key) 
+    this.props.deleteCity(this.props.city.key)
+  }
+
   render() {
     const num = Number(this.props.city.currentWeather[0].Temperature.Metric.Value)
-
+    
     return <div className='allcards'>
 
               <Card className='card'>
@@ -34,13 +40,22 @@ class CardFav extends Component {
                 </CardContent>
                 {num>26 ? <img className='weatherImg' src={sunny} alt='#'/>: (num<=26 && num>14 ? <img className='weatherImg' src={mostlySunny} alt='#' />: (num<=14 ? <img className='weatherImg' src={cold} alt='#'/>: null ))}
                 <CardActions>
-                  <Button size="small">Remove</Button>
+                  <Button onClick={this.removeFav} size="small">Remove</Button>
                 </CardActions>
               </Card>
 
           </div>;
     }
 }
+const mapDispatchToProps = function(dispatch){
+  let obj = {
+      deleteCity: function(data){
+        dispatch(deleteFromFavorite(data))
+      }
+    } 
+    return obj
+  }
 
+let cardFav = connect(null ,mapDispatchToProps)(CardFav)
 
-export default CardFav;
+export default cardFav;

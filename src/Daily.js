@@ -19,7 +19,7 @@ class Daily extends Component {
 
   async componentDidMount()
   {
-  
+    debugger
     if(this.props.data===''){
       const city = await this.getCityCode('tel aviv')
       const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
@@ -88,11 +88,10 @@ classes =()=> useStyles();
       <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
           <span className='plus'>+</span>
       </Fab>
-    </div>           
-          <h1 className='cityName'>{this.state.city}</h1>
-          <h1>{this.props.data}</h1>
-          {this.state.fiveDaysForcst.map(function(day, i){
-            return <Day key={i} weather={day} index={i} />})}
+    </div>     
+    {this.props.data==='' ? <h1 className='cityName'>{this.state.city}</h1>: <h1 className='cityName'>{this.props.data}</h1> }
+    {this.props.data==='' ?  this.state.fiveDaysForcst.map(function(day, i){return <Day key={i} weather={day} index={i} />}) :null}     
+         
           </div>
   }
 }
@@ -111,6 +110,8 @@ const mapDispatchToProps = function(dispatch){
     
 const mapStateToProps=(state)=>
     {
+      debugger
+      
       return {data: state.searchName}
     }
 let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)

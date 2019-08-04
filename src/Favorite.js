@@ -45,7 +45,6 @@ const mapDispatchToProps = function(dispatch){
 
 const mapStateToProps=(state)=>
 {
-  debugger
   return {cityArr: state.allcities}
 }
 
