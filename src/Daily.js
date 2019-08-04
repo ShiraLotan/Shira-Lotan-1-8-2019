@@ -32,18 +32,18 @@ class Daily extends Component {
         key: city.key
       })
     }else{
-      this.setState({
-        city: this.props.data
-      })
+     
       const city = await this.getCityCode(this.props.data)
       const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
 
       const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
       const data = await respond.json()
-      this.setState({
-        fiveDaysForcst:data.DailyForecasts,
-        key: city.key
-      })
+
+       this.setState({
+              city: this.props.data,
+              fiveDaysForcst: data.DailyForecasts,
+              key: city.key
+            })
     }
     
   }
@@ -90,7 +90,7 @@ classes =()=> useStyles();
       </Fab>
     </div>     
     {this.props.data==='' ? <h1 className='cityName'>{this.state.city}</h1>: <h1 className='cityName'>{this.props.data}</h1> }
-    {this.props.data==='' ?  this.state.fiveDaysForcst.map(function(day, i){return <Day key={i} weather={day} index={i} />}) :null}     
+    {this.state.fiveDaysForcst.map((day, i)=><Day key={i} weather={day} index={i} />)}    
          
           </div>
   }
@@ -111,8 +111,8 @@ const mapDispatchToProps = function(dispatch){
 const mapStateToProps=(state)=>
     {
       debugger
-      
-      return {data: state.searchName}
+
+      return {data: state.searchName.charAt(0).toUpperCase()+ state.searchName.slice(1)}
     }
 let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)
 

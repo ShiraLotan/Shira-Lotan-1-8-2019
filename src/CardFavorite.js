@@ -12,6 +12,7 @@ import cold from './img/cold.png';
 import { connect } from "react-redux";
 import { deleteFromFavorite } from './Action'
 import { withRouter } from 'react-router-dom';
+import { searchCity } from './Action';
 
 class CardFav extends Component {
 
@@ -21,6 +22,8 @@ class CardFav extends Component {
   }
   mainPage=()=>
   {
+    console.log(this.props.city.city)
+    this.props.searchCityName(this.props.city.city)
    this.props.history.push("/")
   }
 
@@ -54,6 +57,9 @@ class CardFav extends Component {
 }
 const mapDispatchToProps = function(dispatch){
   let obj = {
+    searchCityName: function(data){
+      dispatch(searchCity(data))
+    },
       deleteCity: function(data){
         dispatch(deleteFromFavorite(data))
       }
