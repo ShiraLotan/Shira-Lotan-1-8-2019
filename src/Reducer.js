@@ -1,54 +1,52 @@
-const ADD_CITY = 'ADD_CITY';
-const SEARCH = 'SEARCH';
-const ADD_STORAGE = 'ADD_STORAGE';
-const DELETE_CITY='DELETE_CITY';
+import * as Constants from './Constants'
 
 const initialState = {
   allcities: [],
   searchName: '',
-
+  add_id: 0,
 };
-const add_id = 0;
-const search_id = 0;
 
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   switch (action.type) {
-      
-    case ADD_CITY:{
+
+    case Constants.ADD_CITY: {
       const weather = action.weather.forcast;
+      const nextAddId = state.add_id + 1;
       return {
         ...state,
-        id: add_id+1,
-        allcities: [...state.allcities, weather],
+        add_id: nextAddId,
+        allcities: [
+          ...state.allcities,
+          {
+            ...weather,
+            nextAddId
+          }
+        ],
       };
     }
-    case SEARCH:{
-        const search = action.search.forcast;
-        return {
-            ...state,
-          id: search_id+1,
-          searchName: search,
-        };
-      }
+    case Constants.SEARCH: {
+      const search = action.search.forcast;
+      return {
+        ...state,
+        searchName: search,
+      };
+    }
 
-      case ADD_STORAGE:{
-        const weather = action.weather;
-        return {
-            ...state,
-            allcities: [...state.allcities,weather]
-        };
-      }
-      case DELETE_CITY:{
-        debugger
-        const keyToDelete = action.key;
-        const newArr = state.allcities
-        const newState = newArr.filter(cityKey=> cityKey.key!== keyToDelete)
-        return {
-            ...state,
-            allcities: newState
-        };
-      }
+    case Constants.LOAD_STATE: {
+      return action.state;
+    }
+
+    case Constants.DELETE_CITY: {
+      debugger
+      const keyToDelete = action.key;
+      const newArr = state.allcities
+      const newState = newArr.filter(cityKey => cityKey.key !== keyToDelete)
+      return {
+        ...state,
+        allcities: newState
+      };
+    }
     default:
       return state;
   }

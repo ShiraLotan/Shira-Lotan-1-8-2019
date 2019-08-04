@@ -1,18 +1,19 @@
+import * as Constants from './Constants'
 
 export const addToFavorite = forcast => ({
-  type: 'ADD_CITY',
+  type: Constants.ADD_CITY,
   weather: {
     forcast
   }
 })
 
-export const setLocalStorage = forcast => ({
-  type: 'ADD_STORAGE',
-  weather: forcast
+export const loadState = state => ({
+  type: Constants.LOAD_STATE,
+  state,
 })
 
 export const searchCity = forcast => ({
-    type: 'SEARCH',
+    type: Constants.SEARCH,
     search: {
       forcast
     }
@@ -20,6 +21,6 @@ export const searchCity = forcast => ({
 
 
 export const deleteFromFavorite = todelete => ({
-    type: 'DELETE_CITY',
+    type: Constants.DELETE_CITY,
     key: todelete
   })

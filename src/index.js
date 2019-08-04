@@ -5,10 +5,24 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import Reducer from './Reducer';
+import { loadState } from './Action';
 import { createStore } from "redux";
 
+const store = createStore(Reducer);
+
+// Get Redux state from localStorage
+const existingStoredData = localStorage.getItem('data');
+if (existingStoredData) {
+    store.dispatch(loadState(JSON.parse(existingStoredData)));
+}
+
+// Save Redux state to localStorage
+store.subscribe(() => {
+    localStorage.setItem('data', JSON.stringify(store.getState()));
+})
+
 ReactDOM.render(
-    <Provider store={createStore(Reducer)}>
+    <Provider store={store}>
     <App /> 
     </Provider>, document.getElementById('root'));
 

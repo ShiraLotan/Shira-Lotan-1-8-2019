@@ -11,115 +11,133 @@ import { withRouter } from 'react-router-dom';
 
 class Daily extends Component {
 
-  state={
-    city:this.props.data,
-    fiveDaysForcst:[],
-    key:''
+  state = {
+    city: this.props.data,
+    fiveDaysForecast: [],
+    key: ''
   }
 
-  async componentDidMount()
-  {
-    debugger
-    if(this.props.data===''){
-      const city = await this.getCityCode('tel aviv')
-      const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+  async updateForecast(city) {
+    console.log('Update City');
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
+    const data = await respond.json()
+    this.setState({
+      city: city.name,
+      fiveDaysForecast: data.DailyForecasts,
+      key: city.key
+    })
+  }
 
-      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
-      const data = await respond.json()
-      this.setState({
-        city: 'Tel Aviv',
-        fiveDaysForcst:data.DailyForecasts,
-        key: city.key
-      })
-    }else{
-     
-      const city = await this.getCityCode(this.props.data)
-      const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+  async updateForecastByCityName(cityName) {
+    const city = await this.getCityByName(cityName);
+    return this.updateForecast(city);
+  }
 
-      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
-      const data = await respond.json()
+  async updateForecastByGeoPosition(lat, lon) {
+    const city = await this.getCityByGeoPosition(lat, lon);
+    return this.updateForecast(city);
+  }
 
-       this.setState({
-              city: this.props.data,
-              fiveDaysForcst: data.DailyForecasts,
-              key: city.key
-            })
+  componentDidMount() {
+    if (this.props.data === '') {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        this.updateForecastByGeoPosition(lat, lon);
+      });
     }
-    
+    else {
+      this.updateForecastByCityName(this.props.data);
+    }
   }
 
-  async getCityCode(city_name){
-    const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    let prepareCityName =city_name.split(" ")
-    let finalCityForUrl = prepareCityName[0] + '%20' + prepareCityName[1]
-    const city = finalCityForUrl;
+  componentDidUpdate(prevProps) {
+    if (this.props.data !== prevProps.data) {
+      this.updateForecastByCityName(this.props.data);
+    }
+  }
 
-    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${city}`);
-    const data =await respond.json();
+  async getCityByGeoPosition(lat, lon) {
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
+    const data = await respond.json();
+    return {
+      name: data.ParentCity.LocalizedName,
+      key: data.ParentCity.Key
+    };
+  }
+
+  async getCityByName(city_name) {
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    let q = encodeURIComponent(city_name)
+
+    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
+    const data = await respond.json();
+
+    /** @todo handle empty data */
+
     const cityObj = {
-          name: data[0].LocalizedName,
-          key: data[0].Key
-        }
-        return cityObj
-    
+      name: data[0].LocalizedName,
+      key: data[0].Key
+    }
+    return cityObj
+
   }
 
-  async getCurrentWeather()
-{
-  const { history } = this.props;
-  const apiKey='kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-  const cityKey = this.state.key
-  const respond =await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
-  const data = await respond.json();
+  async getCurrentWeather() {
+    const { history } = this.props;
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    const cityKey = this.state.key
+    const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
+    const data = await respond.json();
     this.setState({
       currentWeather: data
     })
-     await localStorage.setItem('data', JSON.stringify(this.state))
-     await this.props.favorite(this.state)
-     await history.push("/favorite")
-}
-classes =()=> useStyles();
+    await this.props.favorite(this.state)
+    await history.push("/favorite")
+  }
+  classes = () => useStyles();
 
 
   render() {
-
-    return <div className='daily'> 
-    <div className='fab'>
-      <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
+    console.log('fiveDaysForecast:', this.state.fiveDaysForecast);
+    return <div className='daily'>
+      <div className='fab'>
+        <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
           <span className='plus'>+</span>
-      </Fab>
-    </div>     
-    {this.props.data==='' ? <h1 className='cityName'>{this.state.city}</h1>: <h1 className='cityName'>{this.props.data}</h1> }
-    {this.state.fiveDaysForcst.map((day, i)=><Day key={i} weather={day} index={i} />)}    
-         
-          </div>
+        </Fab>
+      </div>
+      {this.props.data === '' ? <h1 className='cityName'>{this.state.city}</h1> : <h1 className='cityName'>{this.props.data}</h1>}
+      {this.state.fiveDaysForecast.map((day, i) => <Day key={i} weather={day} index={i} />)}
+
+    </div>
   }
 }
 
 
 
 
-const mapDispatchToProps = function(dispatch){
-    let obj = {
-        favorite: function(data){
-          dispatch(addToFavorite(data))
-        }
-      } 
-      return obj
+const mapDispatchToProps = function (dispatch) {
+  let obj = {
+    favorite: function (data) {
+      dispatch(addToFavorite(data))
     }
-    
-const mapStateToProps=(state)=>
-    {
-      debugger
+  }
+  return obj
+}
 
-      return {data: state.searchName.charAt(0).toUpperCase()+ state.searchName.slice(1)}
-    }
-let daily = connect(mapStateToProps ,mapDispatchToProps)(Daily)
+const mapStateToProps = (state) => {
+  debugger
+
+  return { data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1) }
+}
+let daily = connect(mapStateToProps, mapDispatchToProps)(Daily)
 
 
 
 const useStyles = makeStyles(theme => ({
-  
+
   fab: {
     margin: theme.spacing(1),
   },
