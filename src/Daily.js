@@ -86,7 +86,7 @@ class Daily extends Component {
 
   getCityByGeoPosition = this.errorHandled(async (lat, lon) => {
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    const respond = await fetch(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
+    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
     const data = await respond.json();
     return {
       name: data.LocalizedName,
