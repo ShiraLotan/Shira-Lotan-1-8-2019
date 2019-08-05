@@ -28,7 +28,8 @@ function Header() {
 
           <Typography variant="h6" className={classes.title}>
             <img className='logo' src={herolo} alt='#'/>
-            Herolo Daily Weather Forcast
+            <span className='title'>Herolo Daily Weather Forcast</span>
+            
           </Typography>
          
 

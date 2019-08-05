@@ -17,7 +17,6 @@ class Favorite extends Component {
 
       <h1 className='headline'>My Favorite</h1>
       {this.props.cityArr.length !== 0 ? this.props.cityArr.map(function (city, i) {
-        debugger
         return <CardFav key={i} city={city} />
       }) : <Card className='noFav'><Typography className='emptyHeadline' color="textSecondary" gutterBottom>You Are Currently Not Following Any City</Typography>
           <div className='allImg'>

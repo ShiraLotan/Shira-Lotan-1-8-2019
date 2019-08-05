@@ -7,3 +7,10 @@
   width:150px;
   margin-right: 5px;
 }
+
+@media screen and (max-width: 623px) {
+  .title{
+    display: none;
+    
+  }
+}

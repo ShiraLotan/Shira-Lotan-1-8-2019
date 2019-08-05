@@ -14,3 +14,10 @@
 .plus{
 font-size:30px;
 }
+@media screen and (max-width: 360px) {
+  .cityName {
+    position: relative;
+   font-size: 40px;
+   top: 20px;
+  }
+}

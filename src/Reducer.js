@@ -38,7 +38,6 @@ export default function (state = initialState, action) {
     }
 
     case Constants.DELETE_CITY: {
-      debugger
       const keyToDelete = action.key;
       const newArr = state.allcities
       const newState = newArr.filter(cityKey => cityKey.key !== keyToDelete)

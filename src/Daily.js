@@ -37,6 +37,7 @@ class Daily extends Component {
   }
 
   async updateForecastByCityName(cityName) {
+    
     const city = await this.getCityByName(cityName);
     return this.updateForecast(city);
   }
@@ -58,11 +59,15 @@ class Daily extends Component {
       });
     }
     else {
+      
+
       this.updateForecastByCityName(this.props.data);
     }
   }
 
   componentDidUpdate(prevProps) {
+    
+
     if (this.props.data !== prevProps.data) {
       this.updateForecastByCityName(this.props.data);
     }
@@ -90,14 +95,18 @@ class Daily extends Component {
 
       const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
       const data = await respond.json();
-        debugger
+        
 
         if(data.length===0)
           {
-            debugger
+            
             alert('City was not found! Please try something else')
             this.props.searchCityName('Tel Aviv')
-
+            const oblTelAviv ={ 
+                name: 'tel aviv',
+                key: 215854
+              };
+            return oblTelAviv
           }else{
             const cityObj = {
               name: data[0].LocalizedName,
@@ -182,7 +191,7 @@ const mapDispatchToProps = function (dispatch) {
 }
 
 const mapStateToProps = (state) => {
-  debugger
+  
 
   return { data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1),
             allCities: state.allcities }

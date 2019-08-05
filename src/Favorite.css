@@ -39,3 +39,16 @@
 .allImg{
   text-align: center;
 }
+
+
+@media screen and (max-width: 414px) {
+  .headline{
+    position: relative;
+    right: 30px;
+  }
+  .noFav {
+    position: relative;
+    right: 30px;
+    width: 250px;
+  }
+}

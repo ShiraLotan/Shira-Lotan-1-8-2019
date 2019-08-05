@@ -15,11 +15,12 @@ import cloudy from './img/cloudy.jpeg';
 import storm from './img/storm.png';
 import thunderStorm from './img/thunderStorm.png';
 import rainy from './img/rainy.png';
+import dry from './img/dry.png';
 
 const useStyles = makeStyles({
   card: {
     minWidth: 230,
-   
+    height: 325
   },
   bullet: {
     display: 'inline-block',
@@ -72,11 +73,11 @@ function Day(props) {
         {detectDay(props.index)}
         </Typography>
         
-        { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Partly sunny' || props.weather.Day.IconPhrase==='Partly sunny w/ showers' || props.weather.Day.IconPhrase==='Partly sunny w/ t-storms' ? <img className='sun' src={partlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' ? <img className='sun' src={storm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy' || props.weather.Day.IconPhrase ==='Intermittent clouds' ? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: ( props.weather.Day.IconPhrase === 'Showers' || props.weather.Day.IconPhrase==='Mostly cloudy w/ showers' ? <img className='sun' src={rainy} alt='#'/>: null))))))}
+        { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Partly sunny' || props.weather.Day.IconPhrase==='Partly sunny w/ showers' || props.weather.Day.IconPhrase==='Partly sunny w/ t-storms' ? <img className='sun' src={partlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' ? <img className='sun' src={storm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy' || props.weather.Day.IconPhrase ==='Intermittent clouds' ? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: ( props.weather.Day.IconPhrase === 'Showers' || props.weather.Day.IconPhrase==='Mostly cloudy w/ showers' || props.weather.Day.IconPhrase === 'Rain' ? <img className='sun' src={rainy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase ==='RainDreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
         <Typography className={classes.pos} color="textSecondary">
          Day: {props.weather.Day.IconPhrase}
         </Typography>
-        { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly cloudy' ? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Intermittent clouds' || props.weather.Night.IconPhrase === 'Mostly cloudy w/ showers'  ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' ? <img className='sun' src={storm} alt='#'/>:(props.weather.IconPhrase==='Showers' ? <img src={rainy} alt='#'/>:null)))))))}
+        { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly cloudy' || props.weather.Night.IconPhrase ==='Cloudy'? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Intermittent clouds' || props.weather.Night.IconPhrase === 'Mostly cloudy w/ showers'  ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' || props.weather.Night.IconPhrase==='Partly cloudy w/ t-storms'? <img className='sun' src={storm} alt='#'/>:(props.weather.Night.IconPhrase==='Showers' ? <img className='sun' src={rainy} alt='#'/>:(props.weather.Night.IconPhrase ==='Dreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
 
         <Typography className={classes.pos} color="textSecondary">
           Night: {props.weather.Night.IconPhrase} 

@@ -2,9 +2,14 @@
   "name": "weatherforcast",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.15.1",
+    "npm": "6.4.1"
+  },
   "dependencies": {
     "@material-ui/core": "^4.3.0",
     "@material-ui/icons": "^4.2.1",
+    "homebrew": "^0.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^7.1.0",
