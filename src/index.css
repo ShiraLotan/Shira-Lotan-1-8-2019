@@ -3,6 +3,13 @@
   padding:40px;
   background-image: url('./img/seaAndSun.jpg');
 }
+
+.Weather.dark {
+  background-image: unset;
+  background-color: navy;
+  color: white;
+}
+
 .Search{
   margin:20px auto;
 }

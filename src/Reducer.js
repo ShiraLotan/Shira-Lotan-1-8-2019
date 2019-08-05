@@ -4,6 +4,7 @@ const initialState = {
   allcities: [],
   searchName: '',
   add_id: 0,
+  theme: 'light'
 };
 
 
@@ -57,6 +58,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: action.error
+      }
+    }
+    case Constants.CHANGE_THEME: {
+      return {
+        ...state,
+        theme: state.theme === 'light' ? 'dark' : 'light'
       }
     }
     default:

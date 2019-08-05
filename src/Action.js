@@ -36,3 +36,5 @@ export const deleteFromFavorite = todelete => ({
   })
 
 export const setError = error => ({ type: Constants.SET_ERROR, error });
+
+export const changeTheme = () => ({ type: Constants.CHANGE_THEME });

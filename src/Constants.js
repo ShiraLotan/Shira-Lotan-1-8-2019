@@ -5,3 +5,4 @@ export const DELETE_CITY = 'DELETE_CITY';
 export const DARK_MODE = 'DARK_MODE';
 export const CHANGE_CEL = 'CHANGE_CEL';
 export const SET_ERROR = 'SET_ERROR'
+export const CHANGE_THEME = 'CHANGE_THEME';

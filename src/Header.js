@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Weather from './Weather';
 import Favorite from './Favorite';
@@ -9,13 +10,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import herolo from './img/herolo.png';
+import * as Action from "./Action";
 import ErrorRespond from './ErrorHandle';
 import './Header.css';
 
 
-
-function Header() {
-
+function Header({ changeTheme }) {
   const classes = useStyles();
 
   return (
@@ -32,11 +32,10 @@ function Header() {
             
           </Typography>
          
-
+          <MenuItem className={classes.font} onClick={changeTheme}>Change Theme</MenuItem>
           <MenuItem className={classes.font}><Link  to="/">Weather</Link> </MenuItem>
           <MenuItem className={classes.font}><Link to="/favorite/" >Favorite</Link></MenuItem>
         </Toolbar>
-
       </AppBar>
     </div>
        
@@ -76,4 +75,8 @@ const useStyles = makeStyles(theme => ({
   
 }));
 
-export default Header;
+const mapStateTotProps = (state) => {
+  return { theme: state.theme }
+}
+
+export default connect(mapStateTotProps, { changeTheme: Action.changeTheme })(Header);
