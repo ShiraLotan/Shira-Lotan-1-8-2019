@@ -64,7 +64,6 @@ const changeFahrenheitToCelsius=(fah)=>
 
 function Day(props) {
   const classes = useStyles();
-  console.log(props.weather.Day.IconPhrase)
   return (
     <div className="Day">
       <Card className={classes.card}>

@@ -17,12 +17,10 @@ import { searchCity } from './Action';
 class CardFav extends Component {
 
   removeFav=()=>{
-    console.log(this.props.city.key) 
     this.props.deleteCity(this.props.city.key)
   }
   mainPage=()=>
   {
-    console.log(this.props.city.city)
     this.props.searchCityName(this.props.city.city)
    this.props.history.push("/")
   }

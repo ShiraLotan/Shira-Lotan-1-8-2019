@@ -6,7 +6,8 @@ import { addToFavorite } from './Action';
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import { deleteFromFavorite } from './Action'
 
 
 class Daily extends Component {
@@ -105,16 +106,27 @@ class Daily extends Component {
     await this.props.favorite(this.state)
     await history.push("/favorite")
   }
+
+  removeFromFav=()=>
+  {
+    this.props.deleteCity(this.state.key)
+    alert(`You removed ${this.state.city} from your favorite`)
+
+  }
+
   classes = () => useStyles();
 
 
   render() {
-    console.log('fiveDaysForecast:', this.state.fiveDaysForecast);
     return <div className='daily'>
       <div className='fab'>
         <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
           <span className='plus'>+</span>
         </Fab>
+        {this.props.allCities.length>0 ? this.props.allCities.map(city=> city.key !== this.state.key ? null:  <Fab onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
+                                                                                                                <DeleteIcon />
+                                                                                                              </Fab> ) :null}
+        
       </div>
       {this.props.data === '' ? <h1 className='cityName'>{this.state.city}</h1> : <h1 className='cityName'>{this.props.data}</h1>}
       {this.state.fiveDaysForecast.map((day, i) => <Day key={i} weather={day} index={i} />)}
@@ -130,7 +142,11 @@ const mapDispatchToProps = function (dispatch) {
   let obj = {
     favorite: function (data) {
       dispatch(addToFavorite(data))
+    },
+    deleteCity: function(data){
+      dispatch(deleteFromFavorite(data))
     }
+    
   }
   return obj
 }
@@ -138,7 +154,8 @@ const mapDispatchToProps = function (dispatch) {
 const mapStateToProps = (state) => {
   debugger
 
-  return { data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1) }
+  return { data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1),
+            allCities: state.allcities }
 }
 let daily = connect(mapStateToProps, mapDispatchToProps)(Daily)
 
