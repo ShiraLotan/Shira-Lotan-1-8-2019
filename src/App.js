@@ -51,5 +51,5 @@ function App({ error, setError }) {
 const mapStateToProps = (state) => {
   return { error: state.error };
 }
-
-export default connect(mapStateToProps, { setError: Action.setError })(App);
+const app= connect(mapStateToProps, { setError: Action.setError })(App)
+export default app;
