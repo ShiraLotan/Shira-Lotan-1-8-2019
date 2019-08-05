@@ -42,7 +42,7 @@ class Daily extends Component {
 
   updateForecast = this.errorHandled(async (city) => {
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
+      const respond = await fetch(`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
       const data = await respond.json()
       this.setState({
         city: city.name,
@@ -86,7 +86,7 @@ class Daily extends Component {
 
   getCityByGeoPosition = this.errorHandled(async (lat, lon) => {
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
+    const respond = await fetch(`https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
     const data = await respond.json();
     return {
       name: data.LocalizedName,
@@ -98,7 +98,7 @@ class Daily extends Component {
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
     let q = encodeURIComponent(city_name)
 
-    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
+    const respond = await fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
     const data = await respond.json();
 
 
@@ -124,7 +124,7 @@ class Daily extends Component {
     const { history } = this.props;
     const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
     const cityKey = this.state.key
-    const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
+    const respond = await fetch(`https://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
     const data = await respond.json();
     this.setState({
       currentWeather: data
