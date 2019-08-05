@@ -29,3 +29,8 @@ export const deleteFromFavorite = todelete => ({
     type: Constants.DARK_MODE,
     dark: bool
   })
+
+  export const changeCelsius = bool => ({
+    type: Constants.CHANGE_CEL,
+    isSign: bool
+  })

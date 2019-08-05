@@ -7,8 +7,10 @@ import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { deleteFromFavorite } from './Action'
+import { deleteFromFavorite, changeCelsius } from './Action'
 import { searchCity } from './Action';
+import Switch from '@material-ui/core/Switch';
+
 
 
 class Daily extends Component {
@@ -16,7 +18,16 @@ class Daily extends Component {
   state = {
     city: this.props.data,
     fiveDaysForecast: [],
-    key: ''
+    key: '',
+    celsiusToFar: false
+  }
+
+handleChange =()=>
+  {
+    this.setState({
+      celsiusToFar:!this.state.celsiusToFar
+    })
+    this.props.changeCelsiusToFaAndBack(this.state.celsiusToFar)
   }
 
   async updateForecast(city) {
@@ -154,7 +165,14 @@ class Daily extends Component {
 
   render() {
     return <div className='daily'>
-        
+      <div className='switcher'>
+        <Switch
+        checked={this.state.celsiusToFar}
+        onChange={this.handleChange}
+        value="checkedA"
+        inputProps={{ 'aria-label': 'secondary checkbox' }}
+      />{this.state.celsiusToFar ?<span>Fahrenheit to Celsius  </span> : <span>Celsius to Fahrenheit </span>} 
+      </div>
       <div className='fab'>
         
         {this.props.allCities.length>0 ? this.props.allCities.map((city, i)=> city.key !== this.state.key ? null:  <Fab key ={i} onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
@@ -165,7 +183,7 @@ class Daily extends Component {
         
       </div>
       {this.props.data === '' ? <h1 className='cityName'>{this.state.city}</h1> : <h1 className='cityName'>{this.props.data}</h1>}
-      {this.state.fiveDaysForecast.map((day, i) => <Day key={i} weather={day} index={i} />)}
+      {this.state.fiveDaysForecast.map((day, i) => <Day key={i}  weather={day} index={i} />)}
 
     </div>
   }
@@ -184,6 +202,9 @@ const mapDispatchToProps = function (dispatch) {
     },
     searchCityName: function(data){
       dispatch(searchCity(data))
+    },
+    changeCelsiusToFaAndBack: function (data){
+      dispatch(changeCelsius(data))
     }
     
   }

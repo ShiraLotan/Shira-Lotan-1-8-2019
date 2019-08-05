@@ -21,3 +21,9 @@ font-size:30px;
    top: 20px;
   }
 }
+.switcher{
+  position: relative;
+  top:50px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color:grey;
+}

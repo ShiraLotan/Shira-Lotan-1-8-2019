@@ -46,11 +46,11 @@ export default function (state = initialState, action) {
         allcities: newState
       };
     }
-    case Constants.DARK_MODE: {
-      const dark = action.dark;
+    case Constants.CHANGE_CEL: {
+      const isSign = action.isSign;
       return {
         ...state,
-        dark: dark
+        isSign: isSign
       };
     }
     default:

@@ -64,9 +64,14 @@ const changeFahrenheitToCelsius=(fah)=>
 }
 
 function Day(props) {
+  
+
   const classes = useStyles();
   return (
     <div className="Day">
+
+    
+
       <Card className={classes.card}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
