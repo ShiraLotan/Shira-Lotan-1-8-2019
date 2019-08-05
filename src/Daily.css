@@ -27,3 +27,10 @@ font-size:30px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   color:grey;
 }
+
+@media screen and (max-width: 320px) {
+  .headlineDegrees {
+    position: relative;
+    top:10px;
+  }
+}

@@ -171,7 +171,7 @@ handleChange =()=>
         onChange={this.handleChange}
         value="checkedA"
         inputProps={{ 'aria-label': 'secondary checkbox' }}
-      />{this.state.celsiusToFar ?<span>Fahrenheit to Celsius  </span> : <span>Celsius to Fahrenheit </span>} 
+      />{this.state.celsiusToFar ? <div className='headlineDegrees'>Celsius to Fahrenheit </div>: <div> Fahrenheit to Celsius  </div>} 
       </div>
       <div className='fab'>
         

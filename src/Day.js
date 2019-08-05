@@ -1,5 +1,4 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React,{ useState, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -16,25 +15,10 @@ import storm from './img/storm.png';
 import thunderStorm from './img/thunderStorm.png';
 import rainy from './img/rainy.png';
 import dry from './img/dry.png';
+import { connect } from "react-redux";
+import fah from './img/fah.png';
 
-const useStyles = makeStyles({
-  card: {
-    minWidth: 230,
-    height: 325
-  },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 20,
-    color: 'black'
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
+
 
 const detectDay=(num)=>{
   let dayName='';
@@ -64,43 +48,57 @@ const changeFahrenheitToCelsius=(fah)=>
 }
 
 function Day(props) {
-  
+  const [changeCelsius, setChangeCelsius] = useState(false);
 
-  const classes = useStyles();
+  useEffect(() => setChangeCelsius(props.data) , [
+    props,
+  ]);
   return (
     <div className="Day">
 
     
 
-      <Card className={classes.card}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-        {detectDay(props.index)}
-        </Typography>
-        
-        { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Partly sunny' || props.weather.Day.IconPhrase==='Partly sunny w/ showers' || props.weather.Day.IconPhrase==='Partly sunny w/ t-storms' ? <img className='sun' src={partlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' ? <img className='sun' src={storm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy' || props.weather.Day.IconPhrase ==='Intermittent clouds' ? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: ( props.weather.Day.IconPhrase === 'Showers' || props.weather.Day.IconPhrase==='Mostly cloudy w/ showers' || props.weather.Day.IconPhrase === 'Rain' ? <img className='sun' src={rainy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase ==='RainDreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
-        <Typography className={classes.pos} color="textSecondary">
-         Day: {props.weather.Day.IconPhrase}
-        </Typography>
-        { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly cloudy' || props.weather.Night.IconPhrase ==='Cloudy'? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Intermittent clouds' || props.weather.Night.IconPhrase === 'Mostly cloudy w/ showers'  ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' || props.weather.Night.IconPhrase==='Partly cloudy w/ t-storms'? <img className='sun' src={storm} alt='#'/>:(props.weather.Night.IconPhrase==='Showers' ? <img className='sun' src={rainy} alt='#'/>:(props.weather.Night.IconPhrase ==='Dreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
-
-        <Typography className={classes.pos} color="textSecondary">
-          Night: {props.weather.Night.IconPhrase} 
-        </Typography>
-        
-        <Typography variant="body2" component="p">
-          Min Temp:{changeFahrenheitToCelsius(props.weather.Temperature.Minimum.Value)} <img className='celsius' src={celsius} alt='#'/>
-          </Typography>
-          <Typography variant="body2" component="p">
-          Max Temp:{changeFahrenheitToCelsius(props.weather.Temperature.Maximum.Value)} <img className='celsius' src={celsius} alt='#'/>
-        </Typography>
-
+    <Card className='card'>
+    <CardContent>
+      <Typography  color="textSecondary" gutterBottom>
+      {detectDay(props.index)}
+      </Typography>
       
-      </CardContent>
-     
-    </Card>
-    </div>
+      { props.weather.Day.IconPhrase === 'Sunny' ? <img className='sun' src={sunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly sunny' ? <img className='sun' src={mostlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Partly sunny' || props.weather.Day.IconPhrase==='Partly sunny w/ showers' || props.weather.Day.IconPhrase==='Partly sunny w/ t-storms' ? <img className='sun' src={partlySunny} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' ? <img className='sun' src={storm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy' || props.weather.Day.IconPhrase ==='Intermittent clouds' ? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: ( props.weather.Day.IconPhrase === 'Showers' || props.weather.Day.IconPhrase==='Mostly cloudy w/ showers' || props.weather.Day.IconPhrase === 'Rain' ? <img className='sun' src={rainy} alt='#'/>: (props.weather.Day.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase ==='RainDreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
+      <Typography  color="textSecondary">
+       Day: {props.weather.Day.IconPhrase}
+      </Typography>
+      { props.weather.Night.IconPhrase === 'Clear' ? <img className='sun' src={clear} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly clear' ? <img className='sun' src={mostlyClear} alt='#'/>:(props.weather.Night.IconPhrase === 'Partly cloudy' ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Mostly cloudy' || props.weather.Night.IconPhrase ==='Cloudy'? <img className='sun' src={cloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Intermittent clouds' || props.weather.Night.IconPhrase === 'Mostly cloudy w/ showers'  ? <img className='sun' src={partlyCloudy} alt='#'/>: (props.weather.Night.IconPhrase === 'Thunderstorms' ? <img className='sun' src={thunderStorm} alt='#'/>: (props.weather.Day.IconPhrase === 'Mostly cloudy w/ t-storms' || props.weather.Night.IconPhrase==='Partly cloudy w/ t-storms'? <img className='sun' src={storm} alt='#'/>:(props.weather.Night.IconPhrase==='Showers' ? <img className='sun' src={rainy} alt='#'/>:(props.weather.Night.IconPhrase ==='Dreary' ? <img className='sun' src={dry} alt='#'/> : null))))))))}
+
+      <Typography  color="textSecondary">
+        Night: {props.weather.Night.IconPhrase} 
+      </Typography>
+      {props.data ? 
+      <div>
+      <Typography variant="body2" component="p">
+        Min Temp:{changeFahrenheitToCelsius(props.weather.Temperature.Minimum.Value)} <img className='celsius' src={celsius} alt='#'/>
+        </Typography>
+        <Typography variant="body2" component="p">
+        Max Temp:{changeFahrenheitToCelsius(props.weather.Temperature.Maximum.Value)} <img className='celsius' src={celsius} alt='#'/>
+      </Typography>
+      </div>:<div><Typography variant="body2" component="p">
+                    Min Temp:{props.weather.Temperature.Minimum.Value} <img className='celsius' src={fah} alt='#'/>
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                    Max Temp:{props.weather.Temperature.Maximum.Value} <img className='celsius' src={fah} alt='#'/>
+                  </Typography></div>}
+    
+    </CardContent>
+   
+  </Card>
+  </div>
   );
 }
 
-export default Day;
+const mapStateToProps = (state) => {
+  return { data: state.isSign}
+}
+let day = connect(mapStateToProps)(Day)
+
+
+export default day;
