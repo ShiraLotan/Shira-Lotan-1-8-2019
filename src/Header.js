@@ -9,7 +9,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import herolo from './img/herolo.png';
+import ErrorRespond from './ErrorHandle';
 import './Header.css';
+
 
 
 function Header() {
@@ -23,16 +25,21 @@ function Header() {
       <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
+
           <Typography variant="h6" className={classes.title}>
             <img className='logo' src={herolo} alt='#'/>
             Herolo Daily Weather Forcast
           </Typography>
+         
+
           <MenuItem className={classes.font}><Link  to="/">Weather</Link> </MenuItem>
           <MenuItem className={classes.font}><Link to="/favorite/" >Favorite</Link></MenuItem>
         </Toolbar>
+
       </AppBar>
     </div>
        
+
           
 
         <Switch>
@@ -40,6 +47,8 @@ function Header() {
           <Route path="/favorite"  render={(props)=><Favorite {...props}/>} />
           <Route  render={(props)=><Daily {...props}/>} />
         </Switch>
+        <Route path="/ops" component={ErrorRespond}/>
+
      
     </Router>
     </div>

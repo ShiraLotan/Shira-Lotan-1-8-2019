@@ -47,6 +47,13 @@ export default function (state = initialState, action) {
         allcities: newState
       };
     }
+    case Constants.DARK_MODE: {
+      const dark = action.dark;
+      return {
+        ...state,
+        dark: dark
+      };
+    }
     default:
       return state;
   }

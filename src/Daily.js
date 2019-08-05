@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { deleteFromFavorite } from './Action'
+import { searchCity } from './Action';
 
 
 class Daily extends Component {
@@ -19,14 +20,20 @@ class Daily extends Component {
   }
 
   async updateForecast(city) {
-    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
-    const data = await respond.json()
-    this.setState({
-      city: city.name,
-      fiveDaysForecast: data.DailyForecasts,
-      key: city.key
-    })
+    try{
+      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+      const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
+      const data = await respond.json()
+      this.setState({
+        city: city.name,
+        fiveDaysForecast: data.DailyForecasts,
+        key: city.key
+      })
+    }catch{
+      alert('something went wrong')
+
+    }
+    
   }
 
   async updateForecastByCityName(cityName) {
@@ -35,8 +42,11 @@ class Daily extends Component {
   }
 
   async updateForecastByGeoPosition(lat, lon) {
-    const city = await this.getCityByGeoPosition(lat, lon);
-    return this.updateForecast(city);
+   
+      const city = await this.getCityByGeoPosition(lat, lon);
+          return this.updateForecast(city);
+ 
+    
   }
 
   componentDidMount() {
@@ -59,27 +69,35 @@ class Daily extends Component {
   }
 
   async getCityByGeoPosition(lat, lon) {
-    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
-    const data = await respond.json();
-    debugger
-    return {
-      name: data.LocalizedName,
-      key: data.Key
-    };
+    try{
+      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+      const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
+      const data = await respond.json();
+      return {
+        name: data.LocalizedName,
+        key: data.Key
+      };
+    }catch{
+        alert('something went wrong')
+    }
+    
   }
 
   async getCityByName(city_name) {
-    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    let q = encodeURIComponent(city_name)
+    try{
+      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+      let q = encodeURIComponent(city_name)
 
-    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
-    const data = await respond.json();
+      const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
+      const data = await respond.json();
         debugger
 
         if(data.length===0)
           {
+            debugger
             alert('City was not found! Please try something else')
+            this.props.searchCityName('Tel Aviv')
+
           }else{
             const cityObj = {
               name: data[0].LocalizedName,
@@ -88,23 +106,31 @@ class Daily extends Component {
             return cityObj
           }
           
-    return this.state
+    }catch{
+      alert('something went wrong')
+
+    }
+    
 
 
   }
 
   async getCurrentWeather() {
-    
-    const { history } = this.props;
-    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-    const cityKey = this.state.key
-    const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
-    const data = await respond.json();
-    this.setState({
-      currentWeather: data
-    })
-    await this.props.favorite(this.state)
-    await history.push("/favorite")
+    try{
+      const { history } = this.props;
+      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+      const cityKey = this.state.key
+      const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
+      const data = await respond.json();
+      this.setState({
+        currentWeather: data
+      })
+      await this.props.favorite(this.state)
+      await history.push("/favorite")
+    }catch{
+      alert('something went wrong')
+    }
+   
   }
 
   removeFromFav=()=>
@@ -119,11 +145,12 @@ class Daily extends Component {
 
   render() {
     return <div className='daily'>
+        
       <div className='fab'>
         
-        {this.props.allCities.length>0 ? this.props.allCities.map(city=> city.key !== this.state.key ? null:  <Fab onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
+        {this.props.allCities.length>0 ? this.props.allCities.map((city, i)=> city.key !== this.state.key ? null:  <Fab key ={i} onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
                                                                                                                 <DeleteIcon />
-                                                                                                              </Fab> ) :<Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
+                                                                                                              </Fab> ) :<Fab  onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
                                                                                                                           <span className='plus'>+</span>
                                                                                                                         </Fab>}
         
@@ -145,6 +172,9 @@ const mapDispatchToProps = function (dispatch) {
     },
     deleteCity: function(data){
       dispatch(deleteFromFavorite(data))
+    },
+    searchCityName: function(data){
+      dispatch(searchCity(data))
     }
     
   }

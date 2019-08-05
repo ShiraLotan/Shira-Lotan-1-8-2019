@@ -24,3 +24,8 @@ export const deleteFromFavorite = todelete => ({
     type: Constants.DELETE_CITY,
     key: todelete
   })
+
+  export const darkMode = bool => ({
+    type: Constants.DARK_MODE,
+    dark: bool
+  })

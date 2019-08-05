@@ -1,0 +1,35 @@
+.error{
+  background-image: url('./img/seaAndSun.jpg');
+  background-repeat: no-repeat;
+  height:800px;
+  width: 100%;
+}
+.ooops{
+  width: 300px;
+  height: 300px;
+  position: relative;
+  left: 400px;
+}
+.ooops1{
+  width: 300px;
+  height: 300px;
+  position: relative;
+  top:100px;
+  left:500px;
+}
+.note{
+  position: relative;
+  left: 300px;
+  width:400px;
+  height: 70px;
+  padding: 20px;
+  opacity: .85;
+  text-align: center;
+}
+.backButton{
+  float: left;
+  position: relative;
+  bottom: 5px;
+  right:14px;
+  color: purple !important;
+}
