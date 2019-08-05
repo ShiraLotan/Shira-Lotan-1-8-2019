@@ -34,3 +34,5 @@ export const deleteFromFavorite = todelete => ({
     type: Constants.CHANGE_CEL,
     isSign: bool
   })
+
+export const setError = error => ({ type: Constants.SET_ERROR, error });

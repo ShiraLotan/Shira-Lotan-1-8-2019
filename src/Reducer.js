@@ -53,6 +53,12 @@ export default function (state = initialState, action) {
         isSign: isSign
       };
     }
+    case Constants.SET_ERROR: {
+      return {
+        ...state,
+        error: action.error
+      }
+    }
     default:
       return state;
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Day from './Day';
 import './Daily.css';
 import Fab from '@material-ui/core/Fab';
-import { addToFavorite } from './Action';
+import { addToFavorite, setError } from './Action';
 import { connect } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
@@ -29,9 +29,19 @@ class Daily extends Component {
     this.props.changeCelsiusToFaAndBack(this.state.celsiusToFar)
   }
 
-  async updateForecast(city) {
-    try {
-      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+  errorHandled = (func) => {
+    return async (...args) => {
+      try {
+        return await func(...args);
+      }
+      catch (error) {
+        this.props.setError(error)
+      }
+    }
+  }
+
+  updateForecast = this.errorHandled(async (city) => {
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
       const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
       const data = await respond.json()
       this.setState({
@@ -39,26 +49,17 @@ class Daily extends Component {
         fiveDaysForecast: data.DailyForecasts,
         key: city.key
       })
-    } catch{
-      alert('something went wrong')
+  })
 
-    }
-
-  }
-
-  async updateForecastByCityName(cityName) {
-
+  updateForecastByCityName = this.errorHandled(async (cityName) => {
     const city = await this.getCityByName(cityName);
     return this.updateForecast(city);
-  }
+  })
 
-  async updateForecastByGeoPosition(lat, lon) {
-
+  updateForecastByGeoPosition = this.errorHandled(async (lat, lon) => {
     const city = await this.getCityByGeoPosition(lat, lon);
     return this.updateForecast(city);
-
-
-  }
+  })
 
   componentDidMount() {
     if (this.props.data === '') {
@@ -83,73 +84,54 @@ class Daily extends Component {
     }
   }
 
-  async getCityByGeoPosition(lat, lon) {
-    try {
-      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-      const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
-      const data = await respond.json();
-      return {
-        name: data.LocalizedName,
-        key: data.Key
+  getCityByGeoPosition = this.errorHandled(async (lat, lon) => {
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
+    const data = await respond.json();
+    return {
+      name: data.LocalizedName,
+      key: data.Key
+    };
+  })
+
+  getCityByName = this.errorHandled(async (city_name) => {
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    let q = encodeURIComponent(city_name)
+
+    const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
+    const data = await respond.json();
+
+
+    if (data.length === 0) {
+
+      alert('City was not found! Please try something else')
+      this.props.searchCityName('Tel Aviv')
+      const oblTelAviv = {
+        name: 'tel aviv',
+        key: 215854
       };
-    } catch{
-      alert('something went wrong')
-    }
-
-  }
-
-  async getCityByName(city_name) {
-    try {
-      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-      let q = encodeURIComponent(city_name)
-
-      const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
-      const data = await respond.json();
-
-
-      if (data.length === 0) {
-
-        alert('City was not found! Please try something else')
-        this.props.searchCityName('Tel Aviv')
-        const oblTelAviv = {
-          name: 'tel aviv',
-          key: 215854
-        };
-        return oblTelAviv
-      } else {
-        const cityObj = {
-          name: data[0].LocalizedName,
-          key: data[0].Key
-        }
-        return cityObj
+      return oblTelAviv
+    } else {
+      const cityObj = {
+        name: data[0].LocalizedName,
+        key: data[0].Key
       }
-
-    } catch{
-      alert('something went wrong')
-
+      return cityObj
     }
+  })
 
-
-
-  }
-
-  async getCurrentWeather() {
-    try {
-      const { history } = this.props;
-      const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
-      const cityKey = this.state.key
-      const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
-      const data = await respond.json();
-      this.setState({
-        currentWeather: data
-      })
-      await this.props.favorite(this.state)
-      await history.push("/favorite")
-    } catch{
-      alert('something went wrong')
-    }
-
-  }
+  getCurrentWeather = this.errorHandled(async () => {
+    const { history } = this.props;
+    const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
+    const cityKey = this.state.key
+    const respond = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${cityKey}?apikey=${apiKey}`);
+    const data = await respond.json();
+    this.setState({
+      currentWeather: data
+    })
+    await this.props.favorite(this.state)
+    await history.push("/favorite")
+  })
 
   removeFromFav = () => {
     this.props.deleteCity(this.state.key)
@@ -194,8 +176,6 @@ class Daily extends Component {
 }
 
 
-
-
 const mapDispatchToProps = function (dispatch) {
   let obj = {
     favorite: function (data) {
@@ -209,8 +189,8 @@ const mapDispatchToProps = function (dispatch) {
     },
     changeCelsiusToFaAndBack: function (data) {
       dispatch(changeCelsius(data))
-    }
-
+    },
+    setError: error => dispatch(setError(error))
   }
   return obj
 }
@@ -223,6 +203,8 @@ const mapStateToProps = (state) => {
     allCities: state.allcities
   }
 }
+
+
 let daily = connect(mapStateToProps, mapDispatchToProps)(Daily)
 
 

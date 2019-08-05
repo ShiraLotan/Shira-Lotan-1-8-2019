@@ -48,11 +48,7 @@ const changeFahrenheitToCelsius=(fah)=>
 }
 
 function Day(props) {
-  const [changeCelsius, setChangeCelsius] = useState(false);
-
-  useEffect(() => setChangeCelsius(props.data) , [
-    props,
-  ]);
+ 
   return (
     <div className="Day">
 
