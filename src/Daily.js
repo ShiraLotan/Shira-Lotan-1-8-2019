@@ -120,12 +120,12 @@ class Daily extends Component {
   render() {
     return <div className='daily'>
       <div className='fab'>
-        <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
-          <span className='plus'>+</span>
-        </Fab>
+        
         {this.props.allCities.length>0 ? this.props.allCities.map(city=> city.key !== this.state.key ? null:  <Fab onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
                                                                                                                 <DeleteIcon />
-                                                                                                              </Fab> ) :null}
+                                                                                                              </Fab> ) :<Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
+                                                                                                                          <span className='plus'>+</span>
+                                                                                                                        </Fab>}
         
       </div>
       {this.props.data === '' ? <h1 className='cityName'>{this.state.city}</h1> : <h1 className='cityName'>{this.props.data}</h1>}
