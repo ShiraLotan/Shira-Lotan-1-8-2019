@@ -22,16 +22,15 @@ class Daily extends Component {
     celsiusToFar: false
   }
 
-handleChange =()=>
-  {
+  handleChange = () => {
     this.setState({
-      celsiusToFar:!this.state.celsiusToFar
+      celsiusToFar: !this.state.celsiusToFar
     })
     this.props.changeCelsiusToFaAndBack(this.state.celsiusToFar)
   }
 
   async updateForecast(city) {
-    try{
+    try {
       const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
       const respond = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${city.key}?apikey=${apiKey}`);
       const data = await respond.json()
@@ -40,25 +39,25 @@ handleChange =()=>
         fiveDaysForecast: data.DailyForecasts,
         key: city.key
       })
-    }catch{
+    } catch{
       alert('something went wrong')
 
     }
-    
+
   }
 
   async updateForecastByCityName(cityName) {
-    
+
     const city = await this.getCityByName(cityName);
     return this.updateForecast(city);
   }
 
   async updateForecastByGeoPosition(lat, lon) {
-   
-      const city = await this.getCityByGeoPosition(lat, lon);
-          return this.updateForecast(city);
- 
-    
+
+    const city = await this.getCityByGeoPosition(lat, lon);
+    return this.updateForecast(city);
+
+
   }
 
   componentDidMount() {
@@ -70,14 +69,14 @@ handleChange =()=>
       });
     }
     else {
-      
+
 
       this.updateForecastByCityName(this.props.data);
     }
   }
 
   componentDidUpdate(prevProps) {
-    
+
 
     if (this.props.data !== prevProps.data) {
       this.updateForecastByCityName(this.props.data);
@@ -85,7 +84,7 @@ handleChange =()=>
   }
 
   async getCityByGeoPosition(lat, lon) {
-    try{
+    try {
       const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
       const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${apiKey}&q=${lat}%2C${lon}`);
       const data = await respond.json();
@@ -93,50 +92,49 @@ handleChange =()=>
         name: data.LocalizedName,
         key: data.Key
       };
-    }catch{
-        alert('something went wrong')
+    } catch{
+      alert('something went wrong')
     }
-    
+
   }
 
   async getCityByName(city_name) {
-    try{
+    try {
       const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
       let q = encodeURIComponent(city_name)
 
       const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
       const data = await respond.json();
-        
 
-        if(data.length===0)
-          {
-            
-            alert('City was not found! Please try something else')
-            this.props.searchCityName('Tel Aviv')
-            const oblTelAviv ={ 
-                name: 'tel aviv',
-                key: 215854
-              };
-            return oblTelAviv
-          }else{
-            const cityObj = {
-              name: data[0].LocalizedName,
-              key: data[0].Key
-            }
-            return cityObj
-          }
-          
-    }catch{
+
+      if (data.length === 0) {
+
+        alert('City was not found! Please try something else')
+        this.props.searchCityName('Tel Aviv')
+        const oblTelAviv = {
+          name: 'tel aviv',
+          key: 215854
+        };
+        return oblTelAviv
+      } else {
+        const cityObj = {
+          name: data[0].LocalizedName,
+          key: data[0].Key
+        }
+        return cityObj
+      }
+
+    } catch{
       alert('something went wrong')
 
     }
-    
+
 
 
   }
 
   async getCurrentWeather() {
-    try{
+    try {
       const { history } = this.props;
       const apiKey = 'kGOBBGqaGGlvbSUYueThADFlJ1eMSyCr';
       const cityKey = this.state.key
@@ -147,14 +145,13 @@ handleChange =()=>
       })
       await this.props.favorite(this.state)
       await history.push("/favorite")
-    }catch{
+    } catch{
       alert('something went wrong')
     }
-   
+
   }
 
-  removeFromFav=()=>
-  {
+  removeFromFav = () => {
     this.props.deleteCity(this.state.key)
     alert(`You removed ${this.state.city} from your favorite`)
 
@@ -163,27 +160,34 @@ handleChange =()=>
   classes = () => useStyles();
 
 
+  renderFab = () => {
+    const isFavorite = this.props.allCities.some((city) => city.key === this.state.key);
+    if (isFavorite) {
+      return <Fab onClick={this.removeFromFav} aria-label="delete" className='deleteFav'>
+        <DeleteIcon />
+      </Fab>;
+    }
+    return <Fab onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
+      <span className='plus'>+</span>
+    </Fab>;
+  }
+
+
   render() {
     return <div className='daily'>
       <div className='switcher'>
         <Switch
-        checked={this.state.celsiusToFar}
-        onChange={this.handleChange}
-        value="checkedA"
-        inputProps={{ 'aria-label': 'secondary checkbox' }}
-      />{this.state.celsiusToFar ? <div className='headlineDegrees'>Celsius to Fahrenheit </div>: <div> Fahrenheit to Celsius  </div>} 
+          checked={this.state.celsiusToFar}
+          onChange={this.handleChange}
+          value="checkedA"
+          inputProps={{ 'aria-label': 'secondary checkbox' }}
+        />{this.state.celsiusToFar ? <div className='headlineDegrees'>Celsius to Fahrenheit </div> : <div> Fahrenheit to Celsius  </div>}
       </div>
       <div className='fab'>
-        
-        {this.props.allCities.length>0 ? this.props.allCities.map((city, i)=> city.key !== this.state.key ? null:  <Fab key ={i} onClick={this.removeFromFav}  aria-label="delete" className='deleteFav'>
-                                                                                                                <DeleteIcon />
-                                                                                                              </Fab> ) :<Fab  onClick={this.getCurrentWeather.bind(this)} color="secondary" aria-label="edit" className={this.classes.fab}>
-                                                                                                                          <span className='plus'>+</span>
-                                                                                                                        </Fab>}
-        
+        {this.renderFab()}
       </div>
       {this.props.data === '' ? <h1 className='cityName'>{this.state.city}</h1> : <h1 className='cityName'>{this.props.data}</h1>}
-      {this.state.fiveDaysForecast.map((day, i) => <Day key={i}  weather={day} index={i} />)}
+      {this.state.fiveDaysForecast.map((day, i) => <Day key={i} weather={day} index={i} />)}
 
     </div>
   }
@@ -197,25 +201,27 @@ const mapDispatchToProps = function (dispatch) {
     favorite: function (data) {
       dispatch(addToFavorite(data))
     },
-    deleteCity: function(data){
+    deleteCity: function (data) {
       dispatch(deleteFromFavorite(data))
     },
-    searchCityName: function(data){
+    searchCityName: function (data) {
       dispatch(searchCity(data))
     },
-    changeCelsiusToFaAndBack: function (data){
+    changeCelsiusToFaAndBack: function (data) {
       dispatch(changeCelsius(data))
     }
-    
+
   }
   return obj
 }
 
 const mapStateToProps = (state) => {
-  
 
-  return { data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1),
-            allCities: state.allcities }
+
+  return {
+    data: state.searchName.charAt(0).toUpperCase() + state.searchName.slice(1),
+    allCities: state.allcities
+  }
 }
 let daily = connect(mapStateToProps, mapDispatchToProps)(Daily)
 
