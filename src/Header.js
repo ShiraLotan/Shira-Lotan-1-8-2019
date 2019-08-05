@@ -39,7 +39,6 @@ function Header() {
           <Route path="/" exact render={(props)=><Weather {...props}/>} />
           <Route path="/favorite"  render={(props)=><Favorite {...props}/>} />
           <Route  render={(props)=><Daily {...props}/>} />
-
         </Switch>
      
     </Router>

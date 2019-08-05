@@ -74,14 +74,21 @@ class Daily extends Component {
 
     const respond = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${q}`);
     const data = await respond.json();
+        debugger
 
-    /** @todo handle empty data */
+        if(data.length===0)
+          {
+            alert('City was not found! Please try something else')
+          }else{
+            const cityObj = {
+              name: data[0].LocalizedName,
+              key: data[0].Key
+            }
+            return cityObj
+          }
+          
+    return this.state
 
-    const cityObj = {
-      name: data[0].LocalizedName,
-      key: data[0].Key
-    }
-    return cityObj
 
   }
 
